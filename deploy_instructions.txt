@@ -1,0 +1,39 @@
+# Autopilot
+
+# kubectl install
+gcloud components install kubectl
+
+# install gke-gcloud-auth-plugin
+gcloud components install gke-gcloud-auth-plugin
+
+# kubectl sync
+gcloud container clusters get-credentials <GKE_cluster_name> --region asia-southeast1
+
+# create deployment/docker
+kubectl create -f <yaml for deployment>
+
+# confirm deployment
+kubectl get deployment
+
+# confirm if service is up (check if exposed)
+kubectl get services --watch
+
+# expose (optional)
+kubectl expose deployment <new service name> --type=LoadBalancer --port=8080
+
+# create static ip for load balancer
+gcloud compute addresses create <IP_name> --global
+gcloud compute addresses describe <IP_name> --global
+
+# define https domains
+kubectl apply -f managed-cert.yaml
+
+# create managed service (node port)
+kubectl apply -f mc-service.yaml
+
+# apply managed cert ingress
+kubectl apply -f managed-cert-ingress.yaml
+
+# confirm ingress
+kubectl get ingress
+kubectl describe managedcertificate managed-cert
